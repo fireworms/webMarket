@@ -10,7 +10,6 @@
 <link rel = "stylesheet" href = "./resources/css/bootstrap.min.css" />
 <%
 	String cartId = session.getId();
-	System.out.println(cartId);
 %>
 <title>Insert title here</title>
 </head>
@@ -26,7 +25,7 @@
 			<table width = "100%">
 				<tr>
 					<td align = "left"><a href = "./deleteCart.jsp?cartId=<%=cartId %>" class = "btn btn-danger">삭제하기</a></td>
-					<td align = "right"><a href = "#" class = "btn btn-success">주문하기</a></td>
+					<td align = "right"><a href = "./shippingInfo.jsp?cartId=<%=cartId %>" class = "btn btn-success">주문하기</a></td>
 				</tr>
 			</table>
 		</div>
