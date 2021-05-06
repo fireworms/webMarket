@@ -1,16 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import = "java.util.ArrayList" %>
-<%@ page import = "dto.Product" %>
-<%@ page import = "dao.ProductRepository" %>
+<%@ include file = "./dbConn.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel = "stylesheet" href = "./resources/css/bootstrap.min.css" />
-<%
-	String cartId = session.getId();
-%>
 <title>Insert title here</title>
 </head>
 <body>
@@ -24,8 +19,8 @@
 		<div class = "row">
 			<table width = "100%">
 				<tr>
-					<td align = "left"><a href = "./deleteCart.jsp?cartId=<%=cartId %>" class = "btn btn-danger">삭제하기</a></td>
-					<td align = "right"><a href = "./shippingInfo.jsp?cartId=<%=cartId %>" class = "btn btn-success">주문하기</a></td>
+					<td align = "left"><a href = "./deleteCart.jsp" class = "btn btn-danger">삭제하기</a></td>
+					<td align = "right"><a href = "./shippingInfo.jsp" class = "btn btn-success">주문하기</a></td>
 				</tr>
 			</table>
 		</div>
@@ -39,31 +34,33 @@
 					<th>비고</th>
 				</tr>
 				<%
+					String id = (String)session.getAttribute("id");
+					sql = "select p.productid, p.pname, p.unitprice, c.quantity, c.quantity*p.unitprice from product p join cart c on p.productid = c.productid where c.id = ?";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setString(1, id);
+					rs = pstmt.executeQuery();
 					int sum = 0;
-					ArrayList<Product> cartList = (ArrayList<Product>) session.getAttribute("cartlist");
-					if(cartList == null){
-						cartList = new ArrayList<Product>();
-					}
-					for(int i = 0; i < cartList.size(); i++){
-						Product product = cartList.get(i);
-						int total = product.getUnitPrice() * product.getQuantity();
-						sum = sum + total;
+					while(rs.next()){
+						sum += rs.getInt(5);
 				%>
 				<tr>
-					<td><%=product.getProductId() %> - <%=product.getPname() %></td>
-					<td><%=product.getUnitPrice() %></td>
-					<td><%=product.getQuantity() %></td>
-					<td><%=total %></td>
-					<td><a href = "./removeCart.jsp?id=<%=product.getProductId() %>" class = "badge badge-danger">삭제</a></td> 
+					<td><%=rs.getString(1)%> - <%=rs.getString(2)%></td>
+					<td><%=rs.getString(3)%></td>
+					<td><%=rs.getString(4)%></td>
+					<td><%=rs.getString(5)%></td>
+					<td><a href = "./removeCart.jsp?productid=<%=rs.getString(1)%>" class = "badge badge-danger">삭제</a></td> 
 				</tr>
 				<%
 					}
+					rs.close();
+					pstmt.close();
+					con.close();
 				%>
 				<tr>
 					<th></th>
 					<th></th>
 					<th>총액</th>
-					<th><%=sum %></th>
+					<th><%=sum%></th>
 					<th></th>
 				</tr>
 			</table>

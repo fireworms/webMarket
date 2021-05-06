@@ -3,6 +3,7 @@
 <%@ page import="java.util.*"%>
 <%
 	session.invalidate();
-	
-	response.sendRedirect("addProduct.jsp");
 %>
+<script>
+	location.replace(document.referrer);
+</script>

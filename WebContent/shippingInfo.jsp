@@ -17,7 +17,6 @@
 	</div>
 	<div class = "container">
 		<form name = "shippingProduct" action = "./processShippingInfo.jsp" class = "form-horizontal" method = "post">
-			<input type = "hidden" name = "cartId" value = "<%=request.getParameter("cartId") %>" />
 			<div class = "form-group row">
 				<label class = "col-sm-2">성명</label>
 				<div class = "col-sm-3">
@@ -50,7 +49,7 @@
 			</div>
 			<div class = "form-group row">
 				<div class = "col-sm-offset-2 col-sm-10">
-					<a href = "./cart.jsp?cartId=<%=request.getParameter("cartId") %>" class = "btn btn-secondary" role = "button"> 이전 </a>
+					<a href = "./cart.jsp" class = "btn btn-secondary" role = "button"> 이전 </a>
 					<input type = "button" class = "btn btn-primary" value = "등록" onclick = "CheckShippingProduct()"/>
 					<a href = "./checkOutCancelled.jsp" class = "btn btn-secondary" role = "button"> 취소 </a>
 				</div>

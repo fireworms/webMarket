@@ -24,15 +24,17 @@
 					out.println("아이디와 비밀번호를 입력하세요");
 					out.println("</div>");
 				}
+				System.out.println(request.getRequestURI());
 			%>
-			<form class = "form-signin" action = "j_security_check" method = "post">
+			<form class = "form-signin" action = "./processLogin.jsp" method = "post" onsubmit = "javascript:referrer()">
+				<input id = "referrer" type = "hidden" name = "referrer" value = "<%=request.getParameter("pageName")!=null ? request.getParameter("pageName") : request.getHeader("referer")%>">
 				<div class = "form-group">
 					<label for = "inputUserName" class = "sr-only">User Name</label>
-					<input type = "text" class = "form-control" placeholder = "ID" name = 'j_username' required autofocus>
+					<input type = "text" class = "form-control" placeholder = "ID" name = 'id' required autofocus>
 				</div>
 				<div class = "form-group">
 					<label for = "inputPassword" class = "sr-only">Password</label>
-					<input type = "password" class = "form-control" placeholder = "Password" name = 'j_password' required>
+					<input type = "password" class = "form-control" placeholder = "Password" name = 'pass' required>
 				</div>
 				<button class = "btn btn btn-lg btn-success btn-block" type = "submit">로그인</button>
 			</form>

@@ -1,31 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import = "java.util.ArrayList" %>
-<%@ page import = "dto.Product" %>
-<%@ page import = "dao.ProductRepository" %>
-
+<%@ include file = "dbConn.jsp" %>
 <%
-	String id = request.getParameter("id");
-	if(id == null || id.trim().equals("")){
-		response.sendRedirect("products.jsp");
-		return;
-	}
-	
-	ProductRepository dao = ProductRepository.getInstance();
-	
-	Product product = dao.getProductById(id);
-	if(product == null){
-		response.sendRedirect("exceptionNoProductId.jsp");
-	}
-	
-	ArrayList<Product> cartList = (ArrayList<Product>) session.getAttribute("cartlist");
-	Product goodsQnt = new Product();
-	for(int i = 0; i < cartList.size(); i++){
-		goodsQnt = cartList.get(i);
-		if(goodsQnt.getProductId().equals(id)){
-			cartList.remove(goodsQnt);
-		}
-	}
+	String id = (String)session.getAttribute("id");
+	String productid = request.getParameter("productid");
+	sql = "delete from cart where id = ? and productid = ?";
+	pstmt = con.prepareStatement(sql);
+ 	pstmt.setString(1, id);
+ 	pstmt.setString(2, productid);
+ 	pstmt.executeUpdate();
+ 	
+	pstmt.close();
+	con.close();
 	
 	response.sendRedirect("cart.jsp");
 %>
